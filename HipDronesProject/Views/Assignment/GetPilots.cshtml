@@ -1,0 +1,28 @@
+﻿@model IEnumerable<HipDronesProject.Data.Models.Pilot>
+
+@{
+    ViewData["Title"] = "GetPilots";
+}
+
+<h2>GetPilots</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Info)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Available)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+

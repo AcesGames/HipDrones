@@ -1,0 +1,37 @@
+﻿@model HipDronesProject.Data.Models.Pilot
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+
+<h2>Are you sure you want to delete this pilot?</h2>
+<div>
+   <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Info)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Info)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Available)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Available)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

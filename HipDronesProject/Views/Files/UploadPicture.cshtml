@@ -1,0 +1,139 @@
+﻿@model HipDronesProject.Data.Models.Picture
+
+@{
+    ViewData["Title"] = "UploadPicture";
+}
+
+<form asp-action="UploadPicture">
+
+    <div class="panel panel-body" style="min-height:256px">
+
+
+        <div class="col-md-12">
+            <div class="btn btn-primary">
+                <input type="file" multiple id="imageBrowes" />
+            </div>
+            <a href="#" class="btn file-upload-button btn-default disabled" onclick="Uploadimage()">Upload</a>
+
+            <hr />
+        </div>
+        
+
+
+        <div class="col-md-12">
+            <div class="thumbnail-images">
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+            <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script>
+
+            $(document).ready(function () {
+
+                $("#imageBrowes").change(function () {
+
+                    for (var i = 0; i < this.files.length; i++) {
+                        var File = this.files[i];
+
+                        if (File) {
+                            ReadImage(File, i);
+
+                            $('.file-upload-button').removeClass('disabled');
+                        }
+                    }
+                });
+
+            });
+
+
+            var ReadImage = function (file, index) {
+
+                var reader = new FileReader;
+                var image = new Image;
+
+                reader.readAsDataURL(file);
+                reader.onload = function (_file) {
+
+                    image.src = _file.target.result;
+                    image.onload = function () {
+
+                        var height = this.height;
+                        var width = this.width;
+                        var type = file.type;
+                        var size = ~~(file.size / 1024) + "KB";
+
+            
+                        var $previewHtml = '<div class="col-md-4"><div id="imgPreview' + index + '" class="thumbnail" style="display: none">';
+                        $previewHtml += ' <img class="img-responsive" id="targetImg' + index + '" />';
+                        $previewHtml += '<div class="caption">';
+                        $previewHtml += '<a href="#" onclick="ClearPreview()"><i class="glyphicon glyphicon-trash"></i></a>';
+                        $previewHtml += '<span id="description' + index + '"></span></div></div></div>';
+
+                        $('.thumbnail-images').append($previewHtml);
+
+
+
+                        $("#targetImg" + index).attr('src', _file.target.result);
+                        $("#description" + index).text("Size:" + size + ", " + height + "X " + width + ", " + type + "");
+                        $("#imgPreview" + index).show();
+
+
+                    };
+
+                };
+
+            };
+
+            var ClearPreview = function () {
+
+                $(".thumbnail-images").empty();
+                $(".thumbnail-images").closest('form').get(0).reset();
+            };
+
+
+            var Uploadimage = function () {
+
+                var file = $("#imageBrowes").get(0).files;
+
+                var successCount = 0;
+
+                for (var i = 0; i < file.length; i++) {
+
+                    var data = new FormData;
+                    data.append("ImageFile", file[i]);
+                    data.append("ProductName", "SamsungA8");
+
+                    $.ajax({
+                        type: "Post",
+                        url: "/files/uploadpicture",
+                        data: data,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            $("#uploadedImage").append('<img src="/images/uploaded/' +
+                                response +
+                                '" class="img-responsive thumbnail"/>');
+                            successCount++;
+
+                            if (successCount == file.length) {
+                                ClearPreview();
+                                alert("File Uploaded Successfully");
+
+                            }
+                        }
+
+
+                    });
+                 }
+            };
+
+        </script>
+
+</form>
